@@ -29,6 +29,7 @@ This project is a Python-based tool that efficiently scans a range of IP address
 ```bash
 git clone https://github.com/strobes-co/tls-scan.git
 cd tls-scan
+python3 setup.py install
 ```
 
 2. (Optional) Install dependencies if they exist:
@@ -40,13 +41,13 @@ pip install -r requirements.txt
 3. Run the script:
 
 ```bash
-python3 <script_name>.py <CIDR> [--concurrency <num_of_concurrent_tasks>]
+tls_scan <CIDR> [--concurrency <num_of_concurrent_tasks>]
 ```
 
 For example:
 
 ```bash
-python3 scanner.py 192.168.0.0/24 --concurrency 100
+tls_scan 192.168.0.0/24 --concurrency 100
 ```
 
 ## Arguments:
