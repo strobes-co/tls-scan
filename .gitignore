@@ -18,3 +18,4 @@ temp_file/
 .mypy_cache/*
 *.pickle
 .DS_Store
+*.jsonl

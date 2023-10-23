@@ -1,11 +1,14 @@
 import asyncio
 import ipaddress
 import time
+import json
 import argparse
 from .helpers import create_ssl_context
 import hashlib
 
 COMMON_SSL_PORTS = [443, 8443, 8080, 9443]
+
+ctx = create_ssl_context()
 
 
 def format_subject(subject):
@@ -14,7 +17,6 @@ def format_subject(subject):
 
 async def get_cert_details(semaphore: asyncio.Semaphore, ip: str, port: int) -> dict:
     async with semaphore:
-        ctx = create_ssl_context()
         start_time = time.time()
 
         conn = asyncio.open_connection(ip, port, ssl=ctx)
@@ -61,9 +63,7 @@ async def get_cert_details(semaphore: asyncio.Semaphore, ip: str, port: int) -> 
             "tls_connection": "ctls",  # Placeholder, adjust as needed.
             "sni": ip  # Placeholder, adjust as needed.
         }
-        print(details)
-
-        return details
+        print(json.dumps(details))
 
 
 async def async_main(cidr: str, concurrency: int):
@@ -71,6 +71,7 @@ async def async_main(cidr: str, concurrency: int):
     ip_net = ipaddress.ip_network(cidr)
     tasks = [get_cert_details(semaphore, str(ip), port)
              for port in COMMON_SSL_PORTS for ip in ip_net]
+    print(len(tasks))
     await asyncio.gather(*tasks, return_exceptions=True)
 
 
